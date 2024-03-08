@@ -3,11 +3,9 @@
         <header>
         <h1>Tu puente hacia el futuro digital</h1>
         <nav>
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="usuarios.html" >Contacto</a></li>
-                <li><a href="articulos.html" >Articulos</a></li>
-            </ul>
+          <router-link to="/">Inicio</router-link>
+          <router-link to="/articulos">Artículos</router-link>
+          <router-link to="/usuarios">Contacto</router-link>
         </nav>
         
     </header>

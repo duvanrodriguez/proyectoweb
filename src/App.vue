@@ -4,9 +4,7 @@
     <HelloWorld msg="Tu puente hacia el futuro digital"/>
     <Header />
 
-    <Articulos />
-
-    <routter-view />
+    <Main />
 
     <Footer />
   </div>
@@ -15,14 +13,14 @@
 <script>
 import Header from './components/header.vue'
 import Footer from './components/footer.vue'
-import Articulos from './components/articulos.vue'
+import Main from './components/Main.vue'
 //import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
   components: {
     Header,
-    Articulos,
+    Main,
     Footer
   }
 }

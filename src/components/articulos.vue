@@ -9,7 +9,6 @@
 </div>
 </template>
 <script>
-import '../js/scriptArticulo';
 export default {
   name: 'Articulos',
   props: {
