@@ -1,32 +1,37 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contacto</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="script/scriptUsuario.js"></script>
-</head>
-<body>
-    <header>
-        <img src="img/Dartech Digital.jpeg"  alt="Logo de DARTECH DIGITAL" width="200" height="200">
-        <h1>tecnologia a tu alcance</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Series</a></li>
-                <li><a href="usuarios.html" >Contacto</a></li>
-                <li><a href="articulos.html" >Articulos</a></li>
-            </ul>
-        </nav>
+<template>
+    <main >
         
-    </header>
-    <main id="mainPage2">
-       <div id="usuarios-lista"></div>
+        <h2>CONTACTO</h2>
+    <ul>
+      <li v-for="usuario in usuarios" :key="usuario.id">
+        <!-- Usa v-bind o : para enlazar dinámicamente el atributo alt -->
+        <img :src="usuario.imagen" :alt="'Imagen de ' + usuario.nombre">
+        <p>Nombre: {{ usuario.nombre }} {{ usuario.apellido }}</p>
+        <p>Edad: {{ usuario.edad }}</p>
+        <p>Dirección: {{ usuario.direccion }}</p>
+        <p>Celular: {{ usuario.celular }}</p>
+        <p>Universidad: {{ usuario.universidad }}</p>
+        <p>Carrera: {{ usuario.carrera }}</p>
+        <!-- Usar v-if o v-show para mostrar condicionalmente el estado del usuario -->
+        <p v-if="usuario.activo">Activo</p>
+        <p v-else>Inactivo</p>
+      </li>
+    </ul>
     </main>
+</template>
 
-    <footer>
-        <p>pagina desarrollada por Duvan Rodriguguez</p>
-    </footer>
+<script>
+import usuariosJSON from '../json/datos1.json';
 
-</body>
-</html>
+export default {
+  data() {
+    return {
+      usuarios: []
+    };
+  },
+  created() {
+    // Asignar los datos de usuarios del archivo JSON al objeto usuarios
+    this.usuarios = usuariosJSON.usuarios;
+  }
+};
+</script>

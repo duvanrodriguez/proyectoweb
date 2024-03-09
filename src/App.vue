@@ -1,10 +1,9 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./img/Dartech Digital.jpeg">
-    <HelloWorld msg="Tu puente hacia el futuro digital"/>
     <Header />
 
-    <Main />
+    <router-view></router-view>
 
     <Footer />
   </div>
@@ -13,14 +12,13 @@
 <script>
 import Header from './components/header.vue'
 import Footer from './components/footer.vue'
-import Main from './components/Main.vue'
+
 //import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
   components: {
     Header,
-    Main,
     Footer
   }
 }

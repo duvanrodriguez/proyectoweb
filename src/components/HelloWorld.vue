@@ -1,35 +1,32 @@
 <template>
-    <h1>{{ msg }}</h1>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">inicio</a></li>
-                <li><a href="usuarios.html" >Contacto</a></li>
-                <li><a href="articulos.html" >Articulos</a></li>
-            </ul>
-        </nav>
-        
-    </header>
-
-    <main id="mainPage3">
-        <div id="articulos-lista"></div>
+    <main >
+      <p>prueba Inicio</p>
     </main>
-
-    <footer>
-    <p>pagina desarrollada por Duvan Rodriguguez</p>
-</footer>
-
-
 </template>
 
-<script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+<script setup>
+import {   onBeforeMount, ref } from 'vue';
+import axios from '@/axios'; 
+
+const nombre = ref("Duvan Rodriguez")
+const items = ref("");
+  const valoresRick = async () => {
+    try {
+        const response = await axios.get('/character/');
+        items.value = response.data.results;
+        console.log(items.value);
+      } catch (error) {
+        console.error('Error al obtener datos:', error);
+      }
   }
-}
+
+onBeforeMount(()=>{
+  valoresRick()
+})
+
+
 </script>
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
