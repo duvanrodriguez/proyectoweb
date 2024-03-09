@@ -2,6 +2,86 @@
     "articulos": [
       {
         "id": 1,
+        "imagen":  "img/Diapositiva7.png",
+        "nombre": "Memoria RAM DDR4 16GB",
+        "descripcion": "Memoria RAM DDR4 de 16GB para mejorar el rendimiento de tu computadora.",
+        "precio": 50.99,
+        "disponible": true
+      },
+      {
+        "id": 2,
+        "imagen": "img/ssd 512 adara m2 pcle.png",
+        "nombre": "SSD 500GB SATA",
+        "descripcion": "Unidad de estado sólido (SSD) de 500GB con interfaz SATA para almacenamiento rápido y confiable.",
+        "precio": 79.99,
+        "disponible": true
+      },
+      {
+        "id": 3,
+        "imagen": "img/Diapositiva6.png",
+        "nombre": "Disco Duro Externo 1TB USB 3.0",
+        "descripcion": "Disco duro externo de 1TB con conexión USB 3.0 para almacenamiento adicional y portabilidad.",
+        "precio": 64.99,
+        "disponible": true
+      },
+      {
+        "id": 4,
+        "imagen": "img/Diapositiva14.png",
+        "nombre": "Mouse Inalámbrico",
+        "descripcion": "Mouse inalámbrico ergonómico para un control preciso y sin cables.",
+        "precio": 19.99,
+        "disponible": true
+      },
+      {
+        "id": 5,
+        "imagen": "img/Diapositiva8.png",
+        "nombre": "Monitor Curvo 27 Pulgadas",
+        "descripcion": "Monitor curvo de 27 pulgadas con resolución Full HD para una experiencia de visualización inmersiva.",
+        "precio": 249.99,
+        "disponible": true
+      },
+      {
+        "id": 6,
+        "imagen": "img/Diapositiva13.png",
+        "nombre": "Portátil 15.6 Pulgadas",
+        "descripcion": "Portátil ligero y potente con pantalla de 15.6 pulgadas, procesador Intel Core i5 y 8GB de RAM.",
+        "precio": 699.99,
+        "disponible": true
+      },
+      {
+        "id": 7,
+        "imagen": "img/Diapositiva10.png",
+        "nombre": "PC Gamer Ryzen 7",
+        "descripcion": "PC gamer de alto rendimiento con procesador AMD Ryzen 7, tarjeta gráfica NVIDIA GeForce RTX 3060 y 16GB de RAM.",
+        "precio": 1299.99,
+        "disponible": true
+      },
+      {
+        "id": 8,
+        "imagen": "img/Diapositiva11.png",
+        "nombre": "Auriculares Inalámbricos Bluetooth",
+        "descripcion": "Auriculares inalámbricos con tecnología Bluetooth para disfrutar de tu música favorita sin cables.",
+        "precio": 39.99,
+        "disponible": true
+      },
+      {
+        "id": 9,
+        "imagen": "img/Diapositiva1.jpg",
+        "nombre": "Impresora Multifuncional WiFi",
+        "descripcion": "Impresora multifuncional con conexión WiFi para imprimir, escanear y copiar desde cualquier dispositivo.",
+        "precio": 89.99,
+        "disponible": true
+      },
+      {
+        "id": 10,
+        "imagen": "img/Diapositiva12.png",
+        "nombre": "Cámara de Seguridad IP",
+        "descripcion": "Cámara de seguridad IP con resolución Full HD y visión nocturna para monitorear tu hogar o negocio.",
+        "precio": 49.99,
+        "disponible": true
+      },
+      {
+        "id": 1,
         "imagen": "img/Diapositiva7.png",
         "nombre": "Memoria RAM DDR4 16GB",
         "descripcion": "Memoria RAM DDR4 de 16GB para mejorar el rendimiento de tu computadora.",

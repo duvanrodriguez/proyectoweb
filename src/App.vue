@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./img/Dartech Digital.jpeg">
     <Header />
 
     <router-view></router-view>
