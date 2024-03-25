@@ -10,7 +10,6 @@
           <p class="informacion">Edad: {{ usuario.edad }}</p>
           <p class="informacion">Dirección: {{ usuario.direccion }}</p>
           <p class="informacion">Celular: {{ usuario.celular }}</p>
-          <p class="informacion">Universidad: {{ usuario.universidad }}</p>
           <p class="informacion">Carrera: {{ usuario.carrera }}</p>
           <!-- Usar v-if o v-show para mostrar condicionalmente el estado del usuario -->
           <p class="informacion" v-if="usuario.activo">Activo</p>

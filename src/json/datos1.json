@@ -2,14 +2,13 @@
         "usuarios": [
           {
             "id": 1,
-            "imagen": "../img/perfil.png",
-            "nombre": "Juan",
-            "apellido": "Pérez",
-            "edad": 25,
+            "imagen": "img/perfil.png",
+            "nombre": "Duvan Andres",
+            "apellido": "Rodriguez",
+            "edad": 27,
             "direccion": "Calle 123, Ciudad",
-            "celular": "123-456-7890",
-            "universidad": "Universidad X",
-            "carrera": "Ingeniería",
+            "celular": "3176961619",
+            "carrera": "Ingeniero de sistemas",
             "activo": true
           }
         ]
