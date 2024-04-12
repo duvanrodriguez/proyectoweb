@@ -3,6 +3,8 @@ import VueRouter from 'vue-router';
 import Main from './components/Main.vue';
 import Articulos from './components/articulos.vue';
 import Contacto from './components/usuarios.vue';
+import Login from './components/login.vue';
+import Registro from './components/registro.vue';
 
 
 Vue.use(VueRouter);
@@ -10,7 +12,9 @@ Vue.use(VueRouter);
 const routes = [
   { path: '/', component: Main },
   { path: '/articulos', component: Articulos },
-  { path: '/usuarios', component: Contacto }
+  { path: '/usuarios', component: Contacto },
+  { path: '/login', component: Login },
+  { path: '/registro', component: Registro },
 ];
 
 export default new VueRouter({

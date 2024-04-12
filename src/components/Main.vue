@@ -1,89 +1,91 @@
 <template>
-  <div>
-    <h1>Personajes de Rick and Morty</h1>
-    <div class="personajes-container">
-      <div class="personaje-card" v-for="personaje in personajes" :key="personaje.id">
-        <img :src="personaje.image" :alt="personaje.name">
-        <div class="personaje-info">
-          <h3>{{ personaje.name }}</h3>
-          <p>Status: {{ personaje.status }}</p>
-          <p>Especie: {{ personaje.species }}</p>
-        </div>
+  <main>
+    <h1>Lista de Artículos de Tecnología</h1>
+    <div id="articulos-lista">
+      <div v-for="articulo in articulos" :key="articulo.id">
+        <a>
+          <div class="articulo-card">
+            <img :src="articulo.imagen" :alt="'Imagen de ' + articulo.nombre">
+            <div class="articulo-info">
+              <p class="nombre">{{ articulo.nombre }}</p>
+              <p class="descripcion">{{ articulo.descripcion }}</p>
+              <p class="precio">{{ articulo.precio | formatoMoneda }}</p>
+              <p v-if="articulo.disponible" class="disponible">Disponible</p>
+              <p v-else class="no-disponible">No disponible</p>
+            </div>
+          </div>
+        </a>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
-import axios from 'axios';
+import articulosJSON from '../json/datos3.json';
+
 
 export default {
   data() {
     return {
-      personajes: []
+      articulos: []
     };
   },
-  mounted() {
-    this.fetchPersonajes();
+  created() {
+    this.articulos = articulosJSON.articulos;
   },
-  methods: {
-    fetchPersonajes() {
-      axios.get('https://rickandmortyapi.com/api/character')
-        .then(response => {
-          this.personajes = response.data.results;
-        })
-        .catch(error => {
-          console.error('Error al obtener los personajes:', error);
-        });
+  filters: {
+    formatoMoneda(valor) {
+      return `$${valor.toFixed(2)}`;
     }
   }
-}
+};
 </script>
 
-<style>
-.personajes-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+<style scoped>
+/* Estilos para la lista de artículos de tecnología como tarjetas */
+#articulos-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
 }
 
-.personaje-card {
-  width: calc(25% - 20px);
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
+.articulo-card {
+  border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  box-sizing: border-box;
+  background-color: #fff;
+  overflow: hidden; /* Oculta cualquier desbordamiento */
 }
 
-.personaje-card img {
+.articulo-card img {
   width: 100%;
-  border-radius: 4px;
+  height: auto;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
-.personaje-info {
-  margin-top: 10px;
+.articulo-info {
+  padding: 15px;
 }
 
-.personaje-info h3 {
-  font-size: 18px;
-  margin-bottom: 5px;
+.articulo-info p {
+  margin: 5px 0;
 }
 
-.personaje-info p {
-  font-size: 14px;
-  margin-bottom: 3px;
+.articulo-info .nombre {
+  font-weight: bold;
 }
 
+.articulo-info .precio {
+  font-weight: bold;
+  color: #007bff;
+}
 
-@media screen and (max-width: 768px) {
-  .personajes-container {
-    justify-content: center; /* Centrar las tarjetas */
-  }
+.articulo-info .disponible {
+  color: #28a745;
+}
 
-  .personaje-card {
-    width: calc(50% - 20px); /* Ancho del 50% de la ventana gráfica, menos el espacio entre tarjetas */
-  }
+.articulo-info .no-disponible {
+  color: #dc3545;
 }
 </style>

@@ -23,6 +23,7 @@
 <script>
 import articulosJSON from '../json/datos3.json';
 
+
 export default {
   data() {
     return {
