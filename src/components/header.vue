@@ -23,6 +23,9 @@
                 <router-link to="/registro">Registrarse</router-link>
               </div>
             </li>
+            <li>
+              <router-link to="/perfil" class="link">usuarios</router-link>
+            </li>
           </ul>
         </nav>
       </header>

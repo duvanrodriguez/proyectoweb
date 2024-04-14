@@ -5,6 +5,7 @@ import Articulos from './components/articulos.vue';
 import Contacto from './components/usuarios.vue';
 import Login from './components/login.vue';
 import Registro from './components/registro.vue';
+import Perfil from './components/perfil.vue';
 
 
 Vue.use(VueRouter);
@@ -15,6 +16,7 @@ const routes = [
   { path: '/usuarios', component: Contacto },
   { path: '/login', component: Login },
   { path: '/registro', component: Registro },
+  { path: '/perfil', component: Perfil},
 ];
 
 export default new VueRouter({

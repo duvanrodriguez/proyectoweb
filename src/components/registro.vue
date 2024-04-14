@@ -43,6 +43,8 @@
   </template>
   
   <script>
+  import axios from '../axios';
+
   export default {
     data() {
       return {
@@ -61,25 +63,20 @@
       };
     },
     methods: {
-      registrarUsuario() {
-        // Envía los datos del usuario al servidor
-        fetch('/api/usuarios/registrar', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.usuario)
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data); // Maneja la respuesta del servidor según sea necesario
-        })
-        .catch(error => {
-          console.error('Error al registrar usuarios:', error);
-        });
+    async registrarUsuario() {
+      try { 
+        // Realizar POST al backend utilizando Axios
+        const response = await axios.post('/registro', this.usuarios);
+
+        // respuesta del backend
+        console.log('Usuario registrado con éxito:', response.data);
+      } catch (error) {
+        // Manejar errores de la solicitud
+        console.error('Error al registrar usuario:', error);
       }
     }
-  };
+  }
+};
   </script>
   
 
