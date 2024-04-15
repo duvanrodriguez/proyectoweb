@@ -37,10 +37,12 @@ export default {
       axios.post('/login', this.usuarios)
         .then(response => {
           // Manejar la respuesta del servidor
+          // eslint-disable-next-line no-console
           console.log(response.data);
         })
         .catch(error => {
           // Manejar errores de la solicitud
+          // eslint-disable-next-line no-console
           console.error(error);
         });
     }

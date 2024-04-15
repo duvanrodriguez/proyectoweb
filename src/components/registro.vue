@@ -69,9 +69,11 @@
         const response = await axios.post('/registro', this.usuarios);
 
         // respuesta del backend
+        // eslint-disable-next-line no-console
         console.log('Usuario registrado con éxito:', response.data);
       } catch (error) {
         // Manejar errores de la solicitud
+        // eslint-disable-next-line no-console
         console.error('Error al registrar usuario:', error);
       }
     }

@@ -18,8 +18,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="usuario in usuarios" :key="usuario.id">
-            <td>{{ usuario.id }}</td>
+          <tr v-for="usuario in usuarios" :key="usuario.idusuarios">
+            <td>{{ usuario.idusuarios }}</td>
             <td>{{ usuario.nombres }}</td>
             <td>{{ usuario.apellidos }}</td>
             <td>{{ usuario.cedula }}</td>
@@ -49,11 +49,21 @@
       // Realizar GET al backend para obtener los datos de los usuarios
       axios.get('/listaUsuarios')
         .then(response => {
+          // eslint-disable-next-line no-console
+          console.log('Respuesta del servidor:', response);
+      
+
           // Asignar los datos de los usuarios recibidos del backend al array usuarios
+          // eslint-disable-next-line no-console
           this.usuarios = response.data;
+
+          // Imprimir los datos recibidos en la consola
+          // eslint-disable-next-line no-console
+      console.log('Datos recibidos del backend:', this.usuarios);
         })
         .catch(error => {
           // Manejar errores de la solicitud
+          // eslint-disable-next-line no-console
           console.error('Error al obtener usuarios:', error);
         });
     }

@@ -1,5 +1,5 @@
 <template>
-    <id>
+  <div>
       <div class="logo">
         <img alt="Vue logo" src="../img/Dartech Digital.jpeg">
       </div>
@@ -29,7 +29,7 @@
           </ul>
         </nav>
       </header>
-    </id>
+    </div>
   </template>
   
   <style>
