@@ -53,7 +53,7 @@
           apellidos: '',
           cedula: '',
           email: '',
-          passwoed: '',
+          password: '',
           direccion: '',
           ciudad: '',
           rol: '',
@@ -65,12 +65,25 @@
     methods: {
     async registrarUsuario() {
       try { 
-        // Realizar POST al backend utilizando Axios
-        const response = await axios.post('/registro', this.usuarios);
 
-        // respuesta del backend
+        // Log para mostrar los datos enviados al backend
         // eslint-disable-next-line no-console
-        console.log('Usuario registrado con éxito:', response.data);
+        console.log('Datos enviados al backend:', this.usuarios);
+        
+        // Realizar POST al backend utilizando Axios
+        // eslint-disable-next-line no-console
+        const response = await axios.post('/registrarUsuario', this.usuarios);
+
+        /// Verificar si la respuesta del backend es exitosa
+        if (response.status === 200) {
+          // Mostrar log de éxito
+          // eslint-disable-next-line no-console
+          console.log('Usuario registrado con éxito:', response.data);
+        } else {
+          // Si la respuesta no es exitosa, mostrar un mensaje de error
+          // eslint-disable-next-line no-console
+          console.error('Error al registrar usuario. Estado:', response.status);
+        }
       } catch (error) {
         // Manejar errores de la solicitud
         // eslint-disable-next-line no-console
