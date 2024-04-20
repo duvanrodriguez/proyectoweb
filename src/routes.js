@@ -6,6 +6,7 @@ import Contacto from './components/usuarios.vue';
 import Login from './components/login.vue';
 import Registro from './components/registro.vue';
 import Perfil from './components/perfil.vue';
+import Articulos2 from './components/articulosSeccion.vue';
 
 
 Vue.use(VueRouter);
@@ -17,6 +18,7 @@ const routes = [
   { path: '/login', component: Login },
   { path: '/registro', component: Registro },
   { path: '/perfil', component: Perfil},
+  { path: '/articulo2', component: Articulos2 },
 ];
 
 export default new VueRouter({
