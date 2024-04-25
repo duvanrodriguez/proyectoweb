@@ -57,7 +57,7 @@
 
           // Asignar los datos de los usuarios recibidos del backend al array usuarios
           // eslint-disable-next-line no-console
-          this.usuarios = response;
+          this.usuarios = response.data;
 
           // Imprimir los datos recibidos en la consola
           // eslint-disable-next-line no-console

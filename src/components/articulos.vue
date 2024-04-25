@@ -2,41 +2,54 @@
   <main>
     <h1>Lista de Artículos de Tecnología</h1>
     <div id="articulos-lista">
-      <div v-for="articulo in articulos" :key="articulo.id">
-        <a>
-          <div class="articulo-card">
-            <img :src="articulo.imagen" :alt="'Imagen de ' + articulo.nombre">
-            <div class="articulo-info">
-              <p class="nombre">{{ articulo.nombre }}</p>
-              <p class="descripcion">{{ articulo.descripcion }}</p>
-              <p class="precio">{{ articulo.precio | formatoMoneda }}</p>
-              <p v-if="articulo.disponible" class="disponible">Disponible</p>
-              <p v-else class="no-disponible">No disponible</p>
-            </div>
+      <button v-for="producto in productos" :key="producto.idproductos " class="boton-articulo">
+        <div class="articulo-card">
+          <img :src="producto.imagen" :alt="'Imagen de ' + producto.nombre">
+          <div class="articulo-info">
+            <p class="nombre">{{ producto.nombre }}</p>
+            <p class="descripcion">{{ producto.descripcion }}</p>
+            <p class="precio">$ {{ producto.precio}}</p>
+            <!--<p v-if="articulo.disponible" class="disponible">Disponible</p>
+            <p v-else class="no-disponible">No disponible</p>-->
           </div>
-        </a>
-      </div>
+        </div>
+      </button>
     </div>
+    <br>
   </main>
 </template>
 
 <script>
-import articulosJSON from '../json/datos3.json';
 
+import axios from '../axios';
 
 export default {
   data() {
     return {
-      articulos: []
+      productos: []
     };
   },
-  created() {
-    this.articulos = articulosJSON.articulos;
-  },
-  filters: {
-    formatoMoneda(valor) {
-      return `$${valor.toFixed(2)}`;
-    }
+  mounted(){
+    // Realizar GET al backend para obtener los datos de los productos
+    axios.get('/listaProductos')
+        .then(response => {
+          // eslint-disable-next-line no-console
+          console.log('Respuesta del servidor:', response);
+      
+
+          // Asignar los datos de los productos recibidos del backend al array productos
+          // eslint-disable-next-line no-console
+          this.productos = response.data;
+
+          // Imprimir los datos recibidos en la consola
+          // eslint-disable-next-line no-console
+      console.log('Datos recibidos del backend:', this.productos);
+        })
+        .catch(error => {
+          // Manejar errores de la solicitud
+          // eslint-disable-next-line no-console
+          console.error('Error al obtener productos:', error);
+        });
   }
 };
 </script>
