@@ -2,7 +2,7 @@
   <main>
     <div>
       <h2>Lista de Usuarios</h2>
-      <table v-if="usuarios.length > 0">
+      <table>
         <thead>
           <tr>
             <th>ID</th>
@@ -33,7 +33,6 @@
         </tbody>
       </table>
 
-      <p v-else>Cargando usuarios...</p>
 
     </div>
   </main>
