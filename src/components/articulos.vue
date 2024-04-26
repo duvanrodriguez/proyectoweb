@@ -1,22 +1,19 @@
 <template>
   <main>
-    <h1>Lista de Artículos de Tecnología</h1>
-    <div id="articulos-lista">
-      <button v-for="producto in productos" :key="producto.idproductos " class="boton-articulo">
-        <div class="articulo-card">
-          <img :src="producto.imagen" :alt="'Imagen de ' + producto.nombre">
-          <div class="articulo-info">
-            <p class="nombre">{{ producto.nombre }}</p>
-            <p class="descripcion">{{ producto.descripcion }}</p>
-            <p class="precio">$ {{ producto.precio}}</p>
-            <!--<p v-if="articulo.disponible" class="disponible">Disponible</p>
-            <p v-else class="no-disponible">No disponible</p>-->
-          </div>
+  <h1>Lista de Artículos de Tecnología</h1>
+  <div id="articulos-lista">
+    <router-link v-for="producto in productos" :key="producto.idproductos" :to="{ name: 'detalleArticulo', params: { id: producto.idproductos } }" class="boton-articulo">
+      <div class="articulo-card">
+        <img :src="producto.imagen" :alt="'Imagen de ' + producto.nombre">
+        <div class="articulo-info">
+          <p class="nombre">{{ producto.nombre }}</p>
+          <p class="descripcion">{{ producto.descripcion }}</p>
+          <p class="precio">$ {{ producto.precio }}</p>
         </div>
-      </button>
-    </div>
-    <br>
-  </main>
+      </div>
+    </router-link>
+  </div>
+</main>
 </template>
 
 <script>
@@ -28,6 +25,11 @@ export default {
     return {
       productos: []
     };
+  },
+  methods: {
+    redirectToDetalleArticulo(id) {
+      this.$router.push({ name: 'detalleArticulo', params: { id: id } });
+    }
   },
   mounted(){
     // Realizar GET al backend para obtener los datos de los productos
