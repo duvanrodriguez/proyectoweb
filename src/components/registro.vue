@@ -34,16 +34,24 @@
         <div class="botones">
         <button type="submit" class="boton-registrar">Registrarse</button>
       </div>
-
       </form>
-      <br>
-      <br>
+
+     <!-- Alerta de éxito -->
+        <div v-if="registroExitoso" class="alert alert-success" role="alert">
+          {{ mensajeRegistro }}
+        </div>
+
     </div>
+    <br>
+      <br>
+      <br>
+      <br>
     </main>
   </template>
   
   <script>
   import axios from '../axios';
+  import router from '../routes';
 
   export default {
     data() {
@@ -59,27 +67,57 @@
           rol: '',
           estado: ''
 
-        }
+        },
+        registroExitoso: false,
+        mensajeRegistro: ''
       };
     },
     methods: {
-    async registrarUsuario() {
+      async registrarUsuario() {
       try { 
-
         // Log para mostrar los datos enviados al backend
         // eslint-disable-next-line no-console
         console.log('Datos enviados al backend:', this.usuarios);
         
         // Realizar POST al backend utilizando Axios
-        // eslint-disable-next-line no-console
         const response = await axios.post('/registrarUsuario', this.usuarios);
 
-        /// Verificar si la respuesta del backend es exitosa
-        if (response.status === 200) {
+        /// Verificar si la respuesta del backend es exitosa (estado 201)
+        if (response.status === 201) {
+          // Reiniciar los campos del formulario
+          this.registroExitoso = true;
+          this.mensajeRegistro = '¡Usuario registrado exitosamente!';
+          // Después de 4 segundos, ocultar la alerta
+            setTimeout(() => {
+              this.registroExitoso = true;
+              this.mensajeRegistro = '';
+            }, 4000);
+          this.usuarios = {
+            nombres: '',
+            apellidos: '',
+            cedula: '',
+            email: '',
+            password: '',
+            direccion: '',
+            ciudad: '',
+            rol: '',
+            estado: ''
+          };
           // Mostrar log de éxito
           // eslint-disable-next-line no-console
           console.log('Usuario registrado con éxito:', response.data);
+          // Redirigir al usuario a la página de inicio después de 2 segundos
+          setTimeout(() => {
+            router.push('/');
+          }, 4000);
         } else {
+          // Error en el registro
+          this.registroExitoso = false;
+          this.mensajeRegistro = 'Error al registrar usuario';
+        
+          setTimeout(() => {
+            this.registroExitoso = false;
+          }, 4000);
           // Si la respuesta no es exitosa, mostrar un mensaje de error
           // eslint-disable-next-line no-console
           console.error('Error al registrar usuario. Estado:', response.status);
@@ -92,10 +130,26 @@
     }
   }
 };
-  </script>
+</script>
   
 
   <style scoped>
+.alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #28a745; /* Color de fondo verde para la alerta de éxito */
+  color: #ffffff; /* Color de texto blanco */
+  text-align: center;
+  padding: 10px 0;
+  z-index: 9999; /* Asegura que la alerta esté por encima de otros elementos */
+}
+
+.alert-success {
+  background-color: #28a745; /* Color de fondo verde para la alerta de éxito */
+}
+
 .registro-usuario {
   display: flex;
   flex-direction: column;

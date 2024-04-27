@@ -5,52 +5,102 @@
       <form @submit.prevent="iniciarSesion" class="formulario">
         <div class="campo">
           <label for="email">Correo electrónico:</label>
-          <input type="email" id="email" v-model="usuarios.email" required>
+          <input type="email" id="email" v-model="email" required>
         </div>
         <div class="campo">
           <label for="password">Contraseña:</label>
-          <input type="password" id="password" v-model="usuarios.password" required>
+          <input type="password" id="password" v-model="password" required>
         </div>
         <div class="botones">
           <button type="submit" class="boton-iniciar">Iniciar Sesión</button>
         </div>
       </form>
+      <!-- Alerta de éxito -->
+      <div v-if="inicioExitoso" class="alert alert-success" role="alert">
+          {{ mensajeInicio }}
+        </div>
+
     </div>
 </main>
-  </template>
+</template>
   
 <script>
 import axios from '../axios';
+import router from '../routes';
 
 export default {
   data() {
     return {
-      usuarios: {
         email: '',
-        password: ''
-      }
+        password: '',
+        inicioExitoso: false,
+        mensajeInicio: ''
     };
   },
   methods: {
-    iniciarSesion() {
-      // Hacer una solicitud POST al endpoint de inicio de sesión en el backend
-      axios.post('/login', this.usuarios)
-        .then(response => {
-          // Manejar la respuesta del servidor
-          // eslint-disable-next-line no-console
-          console.log(response.data);
-        })
-        .catch(error => {
-          // Manejar errores de la solicitud
-          // eslint-disable-next-line no-console
-          console.error(error);
+    async iniciarSesion() {
+      // eslint-disable-next-line no-console
+      console.log('inciando metodo sesion....');
+      try {
+        // eslint-disable-next-line no-console
+        console.log('Datos enviados al backend:', this.usuarios);
+
+        const response = await axios.post('/login', {
+          email: this.email,
+          password: this.password
         });
+
+        if (response.status === 200) {
+          // Reiniciar los campos del formulario
+          this.inicioExitoso = true;
+          this.mensajeInicio = '¡has iniciado sesion exitosamente!';
+          // Después de 4 segundos, ocultar la alerta
+            setTimeout(() => {
+              this.inicioExitoso = true;
+              this.mensajeInicio = '';
+            }, 4000);
+          setTimeout(() => {
+            router.push('/');
+          }, 4000);
+        } else {
+          this.inicioExitoso = false;
+          this.mensajeInicio = '¡Credenciales inválidas!';
+          this.error = 'Credenciales inválidas';
+          setTimeout(() => {
+            this.registroExitoso = false;
+          }, 4000);
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Error al iniciar sesión:', error);
+        this.error = 'Error interno del servidor';
+        setTimeout(() => {
+          this.inicioExitoso = false;
+          this.mensajeInicio = '';
+        }, 4000);
+      }
     }
   }
 };
   </script>
   
   <style scoped>
+.alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #28a745; /* Color de fondo verde para la alerta de éxito */
+  color: #ffffff; /* Color de texto blanco */
+  text-align: center;
+  padding: 10px 0;
+  z-index: 9999; /* Asegura que la alerta esté por encima de otros elementos */
+}
+
+.alert-success {
+  background-color: #28a745; /* Color de fondo verde para la alerta de éxito */
+}
+
   .login {
     display: flex;
     flex-direction: column;

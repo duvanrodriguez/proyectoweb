@@ -20,7 +20,7 @@ const routes = [
   { path: '/registro', component: Registro },
   { path: '/perfil', component: Perfil},
   { path: '/articulo2', component: Articulos2 },
-  { path: '/detalleArticulo/:id', component: DetalleArticulos },
+  { path: '/detalleArticulo/:id', name: 'detalleArticulo', component: DetalleArticulos },
 ];
 
 export default new VueRouter({

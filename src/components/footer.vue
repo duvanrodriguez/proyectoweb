@@ -1,8 +1,8 @@
 <template>
     <div>
-        <footer>
-            <p>pagina desarrollada por Duvan Rodriguguez</p>
-        </footer>
+      <footer class="footer">
+        <p>Desarrollado por Duvan Rodriguez</p>
+      </footer>
     </div>
 </template>
 
@@ -16,9 +16,14 @@ export default {
 </script>
 
 <style>
-footer {
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     background-color: #333;
     color: white;
     padding: 10px;
+    text-align: center;
 }
 </style>

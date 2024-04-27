@@ -1,8 +1,8 @@
 <template>
-  <main>
+<main>
   <h1>Lista de Artículos de Tecnología</h1>
   <div id="articulos-lista">
-    <router-link v-for="producto in productos" :key="producto.idproductos" :to="{ name: 'detalleArticulo', params: { id: producto.idproductos } }" class="boton-articulo">
+    <div v-for="producto in productos" :key="producto.id" class="boton-articulo" @click="redirectToDetalleArticulo(producto.idproductos)">
       <div class="articulo-card">
         <img :src="producto.imagen" :alt="'Imagen de ' + producto.nombre">
         <div class="articulo-info">
@@ -11,7 +11,7 @@
           <p class="precio">$ {{ producto.precio }}</p>
         </div>
       </div>
-    </router-link>
+    </div>
   </div>
 </main>
 </template>
@@ -19,6 +19,7 @@
 <script>
 
 import axios from '../axios';
+//import router from '../routes';
 
 export default {
   data() {
@@ -27,10 +28,10 @@ export default {
     };
   },
   methods: {
-    redirectToDetalleArticulo(id) {
-      this.$router.push({ name: 'detalleArticulo', params: { id: id } });
-    }
-  },
+  redirectToDetalleArticulo(id) {
+    this.$router.push({ name: 'detalleArticulo', params: { id: id } });
+  }
+},
   mounted(){
     // Realizar GET al backend para obtener los datos de los productos
     axios.get('/listaProductos')
