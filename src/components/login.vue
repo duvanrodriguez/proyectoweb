@@ -50,6 +50,10 @@ export default {
           password: this.password
         });
 
+        const token = response.data.token;
+        localStorage.setItem('token', token); // Almacenar el token en el localStorage
+
+
         if (response.status === 200) {
           // Reiniciar los campos del formulario
           this.inicioExitoso = true;

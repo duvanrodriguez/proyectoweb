@@ -18,6 +18,7 @@
           <li class="dropdown">
             <a href="#" class="link dropbtn">Iniciar Sesión / Registrarse</a>
             <div class="dropdown-content">
+              
               <router-link to="/login">Iniciar Sesión</router-link>
               <router-link to="/registro">Registrarse</router-link>
             </div>
@@ -30,6 +31,8 @@
     </header>
 
 </template>
+
+
   
 <style>
 .header {
