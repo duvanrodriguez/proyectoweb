@@ -18,6 +18,7 @@
           <button @click="comprarArticulo">Comprar</button>
         </div>
       </div>
+      
     </main>
 </template>
 
@@ -55,7 +56,10 @@ export default {
   justify-content: space-around;
   align-items: center;
   padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 68px;
 }
+
 
 .imagen-container {
   width: 300px;
