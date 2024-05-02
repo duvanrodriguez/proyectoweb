@@ -15,7 +15,25 @@
           <li>
             <router-link to="/usuarios" class="link">Contacto</router-link>
           </li>
-          <li class="dropdown">
+          <li>
+            <router-link to="/perfil" class="link">usuarios</router-link>
+          </li>
+          <!-- Mostrar el botón de cierre de sesión y el nombre del usuario si está autenticado -->
+          <li v-if="isAuthenticated" class="dropdown">
+            <a href="#" class="link dropbtn">Bienvenido, {{ user.firstName }}</a>
+            <div class="dropdown-content">
+              <button @click="logout">Cerrar sesión</button>
+            </div>
+          </li>
+          <!-- Mostrar el botón de inicio de sesión si el usuario no está autenticado -->
+          <li v-else>
+            <router-link to="/login" class="link">Iniciar Sesión</router-link>
+          </li>
+          <li>
+            <router-link to="/registro">Registrarse</router-link>
+          </li>
+          <!--
+            <li class="dropdown">
             <a href="#" class="link dropbtn">Iniciar Sesión / Registrarse</a>
             <div class="dropdown-content">
               
@@ -23,15 +41,67 @@
               <router-link to="/registro">Registrarse</router-link>
             </div>
           </li>
-          <li>
-            <router-link to="/perfil" class="link">usuarios</router-link>
-          </li>
+          -->
         </ul>
       </nav>
     </header>
 
 </template>
 
+<script>
+import axios from '../axios';
+import routes from '../routes';
+import jwt_decode from "jsonwebtoken";
+
+export default {
+  data() {
+    return {
+      isAuthenticated: false, // Indica si el usuario está autenticado
+      user: {} // Almacena los datos del usuario autenticado
+    };
+  },
+  mounted() {
+    // Verificar si el usuario está autenticado
+    this.isAuthenticated = this.checkAuthentication();
+
+    // Si el usuario está autenticado, obtener sus datos
+    if (this.isAuthenticated) {
+      this.user = this.getUserData();
+    }
+  },
+  methods: {
+    // Verificar si el usuario está autenticado (por ejemplo, revisando el token)
+    checkAuthentication() {
+      const token = localStorage.getItem('token');
+      return !!token; // Devuelve true si hay un token, false si no
+    },
+    // Obtener los datos del usuario desde el token (por ejemplo, decodificando el token)
+    getUserData() {
+      const token = localStorage.getItem('token');
+      // Decodificar el token y obtener los datos del usuario (nombre, apellido, etc.)
+      // Aquí puedes usar la biblioteca jwt-decode o tu propio método para decodificar el token
+      const userData = jwt_decode(token);
+      // Supongamos que el token contiene los datos del usuario en forma de objeto
+      return userData;
+    },
+    // Método para cerrar sesión
+    async logout() {
+      try {
+        // Realizar una solicitud al backend para cerrar sesión
+        await axios.post('/logout');
+        // Eliminar el token del localStorage
+        localStorage.removeItem('token');
+        // Redirigir a la página de inicio de sesión u otra página deseada
+        routes.push('/login');
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Error al cerrar sesión:', error);
+        // Manejar errores
+      }
+    }
+  }
+};
+</script>
 
   
 <style>

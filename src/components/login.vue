@@ -27,6 +27,7 @@
 <script>
 import axios from '../axios';
 import router from '../routes';
+import jwt_decode from "jsonwebtoken";
 
 export default {
   data() {
@@ -53,6 +54,12 @@ export default {
         const token = response.data.token;
         localStorage.setItem('token', token); // Almacenar el token en el localStorage
 
+        // Decodificar el token para obtener los datos del usuario
+        const userData = jwt_decode(token);
+
+        // Aquí userData contendrá los datos del usuario que estaban codificados en el 
+        // eslint-disable-next-line no-console
+        console.log(userData);
 
         if (response.status === 200) {
           // Reiniciar los campos del formulario
