@@ -5,23 +5,23 @@
       <form @submit.prevent="crearProducto">
         <div class="form-group">
           <label for="nombre">Nombre:</label>
-          <input type="text" id="nombre" v-model="nombre" required>
+          <input type="text" id="nombre" v-model="productos.nombre" required>
         </div>
         <div class="form-group">
           <label for="descripcion">Descripción:</label>
-          <textarea id="descripcion" v-model="descripcion" required></textarea>
+          <textarea id="descripcion" v-model="productos.descripcion" required></textarea>
         </div>
         <div class="form-group">
           <label for="precio">Precio:</label>
-          <input type="number" id="precio" v-model="precio" min="0.01" step="0.01" required>
+          <input type="number" id="precio" v-model="productos.precio" min="0.01" step="0.01" required>
         </div>
         <div class="form-group">
           <label for="stock">Stock:</label>
-          <input type="number" id="stock" v-model="stock" min="0" required>
+          <input type="number" id="stock" v-model="productos.stock" min="0" required>
         </div>
         <div class="form-group">
           <label for="imagen">Imagen:</label>
-          <input type="file" id="imagen" @change="handleImagenUpload" accept="image/*">
+          <input type="file" id="imagen" @change="handleImagenUpload" accept="imagen/*">
         </div>
         <button type="submit">Crear Producto</button>
       </form>
@@ -46,55 +46,58 @@
   export default {
     data() {
       return {
-        nombre: '',
-        descripcion: '',
-        precio: 0,
-        stock: 0,
-        imagen: null,
+        productos:{
+          nombre: '',
+          descripcion: '',
+          precio: 0,
+          stock: 0,
+          imagen: null
+        },
         registoproducto: false,
         mensajeProducto: ''
       };
     },
     methods: {
         async crearProducto() {
-        // Aquí puedes enviar los datos del producto al servidor para crearlo
-        // eslint-disable-next-line no-console
-        console.log('Datos del producto:', {
-          nombre: this.nombre,
-          descripcion: this.descripcion,
-          precio: this.precio,
-          stock: this.stock,
-          imagen: this.imagen
-        });
+          try {
+          // Aquí puedes enviar los datos del producto al servidor para crearlo
+          // eslint-disable-next-line no-console
+          console.log('Datos del producto:', this.productos);
 
-        const formData = new FormData();
-        formData.append('nombre', this.nombre);
-        formData.append('descripcion', this.descripcion);
-        formData.append('precio', this.precio);
-        formData.append('stock', this.stock);
-        formData.append('imagen', this.imagen);
+          const formData = new FormData();
+          formData.append('nombre', this.productos.nombre);
+          formData.append('descripcion', this.productos.descripcion);
+          formData.append('precio', this.productos.precio);
+          formData.append('stock', this.productos.stock);
+          formData.append('imagen', this.productos.imagen);
 
+          const response = await axios.post('/registrarProductos', formData);
 
-        const response = await axios.post('/registrarProductos', formData);
-
-        if(Response.status === 201){
-            setTimeout(() => {
-                this.registoproducto = true;
-                this.mensajeProducto = '!producto registrado!!!';
-                router.push('/');
-            }, 4000);
-        }else {
-            setTimeout(() => {
+          if (response.status === 201) {
+              setTimeout(() => {
+                  this.registoproducto = true;
+                  this.mensajeProducto = '!producto registrado!!!';
+                  router.push('/');
+              }, 4000);
+                } else {
+                    setTimeout(() => {
+                        this.registoproducto = false;
+                        this.mensajeProducto = 'error al registras el producto';
+                    }, 4000);
+                    // eslint-disable-next-line no-console
+                    console.log('error al registrar el producto estado: ', response.status);
+                }
+            } catch (error) {
+                // Manejo de errores
+                // eslint-disable-next-line no-console
+                console.error('Error al enviar datos del producto al servidor:', error);
                 this.registoproducto = false;
-                this.mensajeProducto = 'error al registras el producto';
-            }, 4000);
-            // eslint-disable-next-line no-console
-            console.log('error al registrar el producto estado: ', response.status);
-        }
-      },
-      handleImagenUpload(event) {
+                this.mensajeProducto = 'Error al enviar datos del producto al servidor';
+            }
+        },
+        handleImagenUpload(event) {
         // Manejar la subida de la imagen
-        this.imagen = event.target.files[0];
+        this.productos.imagen = event.target.files[0];
       }
     }
   };
