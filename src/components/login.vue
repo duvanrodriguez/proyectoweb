@@ -27,7 +27,7 @@
 <script>
 import axios from '../axios';
 import router from '../routes';
-import jwt_decode from "jsonwebtoken";
+import { decode } from "jsonwebtoken";
 
 export default {
   data() {
@@ -44,7 +44,7 @@ export default {
       console.log('inciando metodo sesion....');
       try {
         // eslint-disable-next-line no-console
-        console.log('Datos enviados al backend:', this.usuarios);
+        console.log('Datos enviados al backend:', this.email, this.password);
 
         const response = await axios.post('/login', {
           email: this.email,
@@ -55,7 +55,7 @@ export default {
         localStorage.setItem('token', token); // Almacenar el token en el localStorage
 
         // Decodificar el token para obtener los datos del usuario
-        const userData = jwt_decode(token);
+        const userData = decode(token);
 
         // Aquí userData contendrá los datos del usuario que estaban codificados en el 
         // eslint-disable-next-line no-console
@@ -95,7 +95,7 @@ export default {
 };
   </script>
   
-  <style scoped>
+  <style>
 .alert {
   position: fixed;
   top: 0;

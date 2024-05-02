@@ -20,7 +20,7 @@
           </li>
           <!-- Mostrar el botón de cierre de sesión y el nombre del usuario si está autenticado -->
           <li v-if="isAuthenticated" class="dropdown">
-            <a href="#" class="link dropbtn">Bienvenido, {{ user.firstName }}</a>
+            <a href="#" class="link dropbtn">Bienvenido, {{ user.nombres }}</a>
             <div class="dropdown-content">
               <button @click="logout">Cerrar sesión</button>
             </div>
@@ -28,6 +28,9 @@
           <!-- Mostrar el botón de inicio de sesión si el usuario no está autenticado -->
           <li v-else>
             <router-link to="/login" class="link">Iniciar Sesión</router-link>
+          </li>
+          <li v-if="isAuthenticated">
+            <router-link to="/crearArticulo" class="link">Crear Productos</router-link>
           </li>
           <li>
             <router-link to="/registro">Registrarse</router-link>
@@ -51,7 +54,7 @@
 <script>
 import axios from '../axios';
 import routes from '../routes';
-import jwt_decode from "jsonwebtoken";
+import { decode } from "jsonwebtoken";
 
 export default {
   data() {
@@ -80,7 +83,7 @@ export default {
       const token = localStorage.getItem('token');
       // Decodificar el token y obtener los datos del usuario (nombre, apellido, etc.)
       // Aquí puedes usar la biblioteca jwt-decode o tu propio método para decodificar el token
-      const userData = jwt_decode(token);
+      const userData = decode(token);
       // Supongamos que el token contiene los datos del usuario en forma de objeto
       return userData;
     },

@@ -8,6 +8,7 @@ import Registro from './components/registro.vue';
 import Perfil from './components/perfil.vue';
 import Articulos2 from './components/articulosSeccion.vue';
 import DetalleArticulos from './components/detalleArticulo.vue';
+import CrearProducto from './components/crearArticulo.vue';
 
 
 Vue.use(VueRouter);
@@ -21,6 +22,7 @@ const routes = [
   { path: '/perfil', component: Perfil},
   { path: '/articulo2', component: Articulos2 },
   { path: '/detalleArticulo/:id', name: 'detalleArticulo', component: DetalleArticulos },
+  { path: '/crearArticulo', component: CrearProducto},
 ];
 
 export default new VueRouter({
