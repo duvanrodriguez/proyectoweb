@@ -1,108 +1,119 @@
 <template>
   <main>
-    <h1>Lista de Artículos de Tecnología</h1>
-    <div id="articulos-lista">
-      <div v-for="producto in productos" :key="producto.id" class="boton-articulo" @click="redirectToDetalleArticulo(producto.idproductos)">
-        <div class="articulo-card">
-          <img :src="producto.imagen" :alt="'Imagen de ' + producto.nombre">
-          <div class="articulo-info">
-            <p class="nombre">{{ producto.nombre }}</p>
-            <p class="descripcion">{{ producto.descripcion }}</p>
-            <p class="precio">$ {{ producto.precio }}</p>
-          </div>
+    <swiper
+      :spaceBetween="30"
+      :centeredSlides="true"
+      :autoplay="{ delay: 2500, disableOnInteraction: false }"
+      :pagination="{ clickable: true }"
+      class="mySwiper"
+      @autoplayTimeLeft="onAutoplayTimeLeft"
+    >
+      <swiper-slide v-for="slide in slides" :key="slide.id">
+        <img :src="slide.image" alt="Slide" />
+      </swiper-slide>
+      <template #container-end>
+        <div class="autoplay-progress">
+          <svg viewBox="0 0 48 48" ref="progressCircle">
+            <circle cx="24" cy="24" r="20"></circle>
+          </svg>
+          <span ref="progressContent"></span>
         </div>
-      </div>
-    </div>
+      </template>
+    </swiper>
   </main>
-  </template>
-  
-  <script>
-  
-  import axios from '../axios';
-  //import router from '../routes';
-  
-  export default {
-    data() {
-      return {
-        productos: []
-      };
-    },
-    methods: {
-    redirectToDetalleArticulo(id) {
-      this.$router.push({ name: 'detalleArticulo', params: { id: id } });
-    }
+</template>
+
+<script>
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { ref } from 'vue';
+//import '../../node_modules/swiper/swiper.css';
+//import '../../node_modules/swiper/modules/navigation.css';
+//import '../../node_modules/swiper/modules/pagination.css';
+import 'swiper/swiper-bundle.css';
+
+export default {
+  components: {
+    Swiper,
+    SwiperSlide,
   },
-    mounted(){
-      // Realizar GET al backend para obtener los datos de los productos
-      axios.get('/listaProductos')
-          .then(response => {
-            // eslint-disable-next-line no-console
-            console.log('Respuesta del servidor:', response);
-        
-  
-            // Asignar los datos de los productos recibidos del backend al array productos
-            // eslint-disable-next-line no-console
-            this.productos = response.data;
-  
-            // Imprimir los datos recibidos en la consola
-            // eslint-disable-next-line no-console
-        console.log('Datos recibidos del backend:', this.productos);
-          })
-          .catch(error => {
-            // Manejar errores de la solicitud
-            // eslint-disable-next-line no-console
-            console.error('Error al obtener productos:', error);
-          });
-    }
-  };
-  </script>
-  
-  <style scoped>
-  /* Estilos para la lista de artículos de tecnología como tarjetas */
-  #articulos-lista {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-  }
-  
-  .articulo-card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    overflow: hidden; /* Oculta cualquier desbordamiento */
-  }
-  
-  .articulo-card img {
-    width: 100%;
-    height: auto;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-  
-  .articulo-info {
-    padding: 15px;
-  }
-  
-  .articulo-info p {
-    margin: 5px 0;
-  }
-  
-  .articulo-info .nombre {
-    font-weight: bold;
-  }
-  
-  .articulo-info .precio {
-    font-weight: bold;
-    color: #007bff;
-  }
-  
-  .articulo-info .disponible {
-    color: #28a745;
-  }
-  
-  .articulo-info .no-disponible {
-    color: #dc3545;
-  }
-  </style>
-  
+  setup() {
+    const slides = [
+      { id: 1, image: '../img/Diapositiva1.jpg' },
+      { id: 2, image: 'url_to_your_image_2.jpg' },
+      // Agrega más objetos de diapositivas según sea necesario
+    ];
+
+    const progressCircle = ref(null);
+    const progressContent = ref(null);
+
+    const onAutoplayTimeLeft = (swiper, time, progress) => {
+      progressCircle.value.style.setProperty('--progress', 1 - progress);
+      progressContent.value.textContent = `${Math.ceil(time / 1000)}s`;
+    };
+
+    return {
+      slides,
+      onAutoplayTimeLeft,
+      progressCircle,
+      progressContent,
+    };
+  },
+};
+</script>
+
+<style scoped>
+#app {
+  height: 100%;
+}
+
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.autoplay-progress {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: var(--swiper-theme-color);
+}
+
+.autoplay-progress svg {
+  --progress: 0;
+  position: absolute;
+  left: 0;
+  top: 0px;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  stroke-width: 4px;
+  stroke: var(--swiper-theme-color);
+  fill: none;
+  stroke-dashoffset: calc(125.6px * (1 - var(--progress)));
+  stroke-dasharray: 125.6;
+  transform: rotate(-90deg);
+}
+</style>
