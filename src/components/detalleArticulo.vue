@@ -67,18 +67,14 @@ export default {
       }
     },
      // Método para agregar el artículo al carrito con la cantidad seleccionada
-     agregarAlCarrito(articulo) {
+     agregarAlCarrito() {
       // eslint-disable-next-line no-console
       console.log('Agregando artículo al carrito...', this.articulo, this.cantidad);
       // Verificar si la cantidad seleccionada es mayor que 0
-      if (this.cantidad > 0) {
         if (this.cantidad > 0) {
           // Agregar el artículo al carrito junto con la cantidad
         this.$emit('agregarAlCarrito', { 
-          id: articulo.id,
-          nombre: articulo.nombre,
-          descripcion: articulo.descripcion,
-          precio: articulo.precio,
+          articulo: this.articulo,
           cantidad: this.cantidad
         });
         //this.$emit('agregarAlCarrito', articulo);
@@ -89,7 +85,6 @@ export default {
       }
     }
   }
-}
 };
 </script>
 
