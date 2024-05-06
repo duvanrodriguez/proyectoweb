@@ -35,6 +35,19 @@
           <li>
             <router-link to="/registro">Registrarse</router-link>
           </li>
+
+          <!-- CarritoBadge -->
+          <li>
+          <div class="carrito-badge">
+            <router-link to="/carrito">
+              <span class="icon">
+                <i class="fa fa-shopping-cart"></i>
+              </span>
+              <!-- Mostrar el número de elementos en el carrito -->
+              <span class="badge">{{ carrito.length }}</span>
+            </router-link>
+          </div>
+        </li>
           <!--
             <li class="dropdown">
             <a href="#" class="link dropbtn">Iniciar Sesión / Registrarse</a>
@@ -55,12 +68,16 @@
 import axios from '../axios';
 import routes from '../routes';
 import { decode } from "jsonwebtoken";
+import '@fortawesome/fontawesome-free/css/all.css'
+
+
 
 export default {
   data() {
     return {
       isAuthenticated: false, // Indica si el usuario está autenticado
-      user: {} // Almacena los datos del usuario autenticado
+      user: {}, // Almacena los datos del usuario autenticado
+      carrito: [] // Almacena los elementos del carrito
     };
   },
   mounted() {
@@ -71,6 +88,8 @@ export default {
     if (this.isAuthenticated) {
       this.user = this.getUserData();
     }
+    // Obtener el carrito del usuario
+    this.obtenerCarrito();
   },
   methods: {
     // Verificar si el usuario está autenticado (por ejemplo, revisando el token)
@@ -99,15 +118,28 @@ export default {
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error('Error al cerrar sesión:', error);
+      }
+    },
+     // Método para obtener el carrito del usuario
+     async obtenerCarrito() {
+      try {
+        // Realizar una solicitud al backend para obtener el carrito del usuario
+        const response = await axios.get('/carrito');
+        // Asignar el carrito obtenido a la propiedad 'carrito'
+        this.carrito = response.data;
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Error al obtener el carrito:', error);
         // Manejar errores
       }
-    }
+     }
   }
 };
 </script>
 
   
 <style>
+/* Estilos para el header */
 .header {
   background-color: #333;
   color: white;
@@ -202,6 +234,26 @@ nav a {
 .center-nav {
   display: flex;
   justify-content: center;
+}
+
+/* Estilos para el carrito de compras */
+.carrito-badge {
+  position: relative;
+}
+
+.icon {
+  font-size: 24px;
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  right: -22px;
+  background-color: red;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 50%;
+  font-size: 12px;
 }
 
   </style>
