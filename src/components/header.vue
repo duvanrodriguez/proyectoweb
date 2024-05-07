@@ -38,16 +38,17 @@
 
           <!-- CarritoBadge -->
           <li>
-          <div class="carrito-badge">
-            <router-link to="/carrito">
-              <span class="icon">
-                <i class="fa fa-shopping-cart"></i>
-              </span>
-              <!-- Mostrar el número de elementos en el carrito -->
-              <span class="badge">{{ carrito.length }}</span>
-            </router-link>
-          </div>
-        </li>
+            <div class="carrito-badge">
+              <router-link to="/carrito">
+                <span class="icon">
+                  <i class="fa fa-shopping-cart"></i>
+                </span>
+                <!-- Obtener el número de elementos en el carrito desde Vuex -->
+                <span class="badge">{{ totalItemsCarrito }}</span>
+              </router-link>
+            </div>
+          </li>
+          <!-- Fin CarritoBadge -->
           <!--
             <li class="dropdown">
             <a href="#" class="link dropbtn">Iniciar Sesión / Registrarse</a>
@@ -60,6 +61,10 @@
           -->
         </ul>
       </nav>
+      <!-- Alerta de éxito -->
+      <div v-if="inicioExitoso" class="alert alert-success" role="alert">
+          {{ mensajeInicio }}
+        </div>
     </header>
 
 </template>
@@ -68,7 +73,8 @@
 import axios from '../axios';
 import routes from '../routes';
 import { decode } from "jsonwebtoken";
-import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/css/all.css';
+import { mapGetters } from 'vuex';
 
 
 
@@ -77,8 +83,13 @@ export default {
     return {
       isAuthenticated: false, // Indica si el usuario está autenticado
       user: {}, // Almacena los datos del usuario autenticado
-      carrito: [] // Almacena los elementos del carrito
+      inicioExitoso: false,
+      mensajeInicio: ''
     };
+  },
+  computed: {
+    // Mapear la propiedad 'totalItemsCarrito' del store
+    ...mapGetters(['totalItemsCarrito'])
   },
   mounted() {
     // Verificar si el usuario está autenticado
@@ -88,8 +99,6 @@ export default {
     if (this.isAuthenticated) {
       this.user = this.getUserData();
     }
-    // Obtener el carrito del usuario
-    this.obtenerCarrito();
   },
   methods: {
     // Verificar si el usuario está autenticado (por ejemplo, revisando el token)
@@ -113,26 +122,18 @@ export default {
         await axios.post('/logout');
         // Eliminar el token del localStorage
         localStorage.removeItem('token');
+        setTimeout(() => {
+          this.inicioExitoso = true;
+          this.mensajeInicio = '¡has cerrado sesion exitosamente!';
+          routes.push('/login');
+          }, 4000);
         // Redirigir a la página de inicio de sesión u otra página deseada
-        routes.push('/login');
+        //routes.push('/login');
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error('Error al cerrar sesión:', error);
       }
-    },
-     // Método para obtener el carrito del usuario
-     async obtenerCarrito() {
-      try {
-        // Realizar una solicitud al backend para obtener el carrito del usuario
-        const response = await axios.get('/carrito');
-        // Asignar el carrito obtenido a la propiedad 'carrito'
-        this.carrito = response.data;
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Error al obtener el carrito:', error);
-        // Manejar errores
-      }
-     }
+    }
   }
 };
 </script>

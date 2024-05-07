@@ -23,11 +23,12 @@
             <input class="cantidad-input" type="number" v-model="cantidad" :min="1" :max="articulo.stock">
             <button class="cantidad-btn" @click="incrementarCantidad">+</button>
           </div>
-          <button @click="agregarAlCarrito" class="comprar-btn">Agregar al carrito</button>
+          <!--<button @click="agregarAlCarrito(articulo)" class="comprar-btn">Agregar al carrito</button>-->
+          <button @click="agregarAlCarrito" class="comprar-btn">Agregar al Carrito</button>
         </div>
         <br>
         
-      <router-link to="/carrito" @click.native="agregarAlCarrito(articulo)" class="comprar-btn">Comprar</router-link>
+      <!-- <router-link to="/carrito" @click.native="agregarAlCarrito(articulo)" class="comprar-btn">Comprar</router-link>-->
       </div>
     </div>
   </main>
@@ -35,12 +36,14 @@
 
 <script>
 import axios from '../axios';
+//import { mapActions } from 'vuex';
 
 export default {
   data() {
     return {
       articulo: [],
-      cantidad: 1 // Inicialmente la cantidad es 1
+      cantidad: 1, // Inicialmente la cantidad es 1
+      props: ['articulo'],
     };
   },
   mounted() {
@@ -66,6 +69,13 @@ export default {
         this.cantidad--;
       }
     },
+    agregarAlCarrito() {
+      // eslint-disable-next-line no-console
+      console.log('Agregando artículo al carrito...', this.articulo, this.cantidad);
+      //this.$store.dispatch('agregarAlCarrito', this.articulo, this.cantidad);
+      this.$store.dispatch('agregarAlCarrito', { articulo: this.articulo, cantidad: this.cantidad });
+    }
+    /*...mapActions(['agregarAlCarrito']),
      // Método para agregar el artículo al carrito con la cantidad seleccionada
      agregarAlCarrito() {
       // eslint-disable-next-line no-console
@@ -73,17 +83,17 @@ export default {
       // Verificar si la cantidad seleccionada es mayor que 0
         if (this.cantidad > 0) {
           // Agregar el artículo al carrito junto con la cantidad
-        this.$emit('agregarAlCarrito', { 
-          articulo: this.articulo,
-          cantidad: this.cantidad
-        });
+          this.$emit('agregarAlCarrito', { 
+            articulo: this.articulo,
+            cantidad: this.cantidad
+          });
         //this.$emit('agregarAlCarrito', articulo);
         //this.$emit('agregarAlCarrito', { ...this.articulo, cantidad: this.cantidad });
       } else {
         // eslint-disable-next-line no-console
         console.error('La cantidad seleccionada debe ser mayor que 0.');
       }
-    }
+    }*/
   }
 };
 </script>
@@ -154,6 +164,7 @@ export default {
   padding: 10px 20px;
   border: none;
   cursor: pointer;
+  margin-left: 3px;
 }
 
 .comprar-btn:hover {
