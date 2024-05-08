@@ -30,6 +30,9 @@
         <div class="subtotal">
           Subtotal: ${{ calcularSubtotal() }}
         </div>
+        <div class="descuento" v-if="descuentoTotal() > 0">
+            Descuento: ${{ descuentoTotal() }}
+          </div>
         <div class="total">
           Total: ${{ calcularTotal() }}
         </div>
@@ -68,9 +71,26 @@
         return total + (item.articulo.precio * item.cantidad);
       }, 0);
     },
+    descuentoTotal() {
+      let descuento = 0;
+      let totalItems = this.carrito.reduce((total, item) => {
+        return total + item.cantidad;
+      }, 0);
+
+      // Verificar si el subtotal es mayor a $300 y la cantidad total de elementos en el carrito es mayor a 3
+      if (this.calcularSubtotal() > 300 && totalItems > 3) {
+        // Calcular el descuento como el 15% del subtotal
+        descuento = this.calcularSubtotal() * 0.15;
+      }
+      return descuento;
+    },
     calcularTotal() {
-      return this.calcularSubtotal();
-      // Aquí puedes agregar lógica adicional para calcular impuestos, envío, etc., y sumarlo al subtotal.
+      return this.calcularSubtotal() - this.descuentoTotal();
+    },
+    checkout() {
+      //agregar la lógica para procesar la compra
+      // eslint-disable-next-line no-console
+      console.log('Procesando la compra...');
     }
   }
 };
