@@ -17,13 +17,13 @@
           <p>Cantidad: {{ item.cantidad }}</p>
         </div>
         <div class="actions">
-          <div class="cantidad">
-            <button class="cantidad-btn" >-</button>
-            <input class="cantidad-input" type="number" >
-            <button class="cantidad-btn" >+</button>
+            <div class="cantidad">
+              <button class="cantidad-btn" @click="decrementarCantidad(item)">-</button>
+              <input class="cantidad-input" type="number" v-model="item.cantidad" :min="1" :max="item.articulo.stock">
+              <button class="cantidad-btn" @click="incrementarCantidad(item)">+</button>
+            </div>
           </div>
         </div>
-      </div>
 
       <!-- Sección de prefactura -->
       <div class="prefactura">
@@ -37,12 +37,18 @@
           Total: ${{ calcularTotal() }}
         </div>
       </div>
-
+      <br>
       <button class="btn-primary" @click="checkout">Comprar ahora</button>
     </div>  
     <br>
       <button @click="vaciarCarrito">Vaciar Carrito</button>
     </div>
+
+    <!-- Alerta de éxito -->
+    <div v-if="mensajeExitoso" class="alert alert-success" role="alert">
+          {{ mensajePedido }}
+        </div>
+
   <br>
   <br>
   <br>
@@ -56,7 +62,14 @@
 </template>
   
 <script>
+import axios from '../axios';
+import { decode } from "jsonwebtoken";
+import router from '../routes';
+
+
   export default {
+    mensajeExitoso: false,
+    mensajePedido: '',
     computed: {
     carrito() {
       return this.$store.state.carrito;
@@ -77,7 +90,7 @@
         return total + item.cantidad;
       }, 0);
 
-      // Verificar si el subtotal es mayor a $300 y la cantidad total de elementos en el carrito es mayor a 3
+      // si el subtotal es mayor a $300 y la cantidad total de elementos en el carrito es mayor a 3
       if (this.calcularSubtotal() > 300 && totalItems > 3) {
         // Calcular el descuento como el 15% del subtotal
         descuento = this.calcularSubtotal() * 0.15;
@@ -87,10 +100,66 @@
     calcularTotal() {
       return this.calcularSubtotal() - this.descuentoTotal();
     },
-    checkout() {
-      //agregar la lógica para procesar la compra
-      // eslint-disable-next-line no-console
-      console.log('Procesando la compra...');
+    incrementarCantidad(item){
+        item.cantidad++;
+    },
+    decrementarCantidad(item){
+      if(item.cantidad > 1){
+        item.cantidad--;
+      }
+    },//procesar la compra
+    async checkout() {
+      // Obtener el token de autenticación almacenado en el frontend
+    const token = localStorage.getItem('token');
+    // Decodificar el token para obtener la información del usuario, incluido su ID
+    const usuario = decode(token);
+
+     // Crear objetos de pedido y detalle de pedido
+      const pedido = {
+        fecha_pedido: new Date(),
+        estado: 'pendiente',
+        idusuario: usuario.id,
+      };
+
+      const detallePedido = this.carrito.map(item => ({
+        cantidad: item.cantidad,
+        precio_unitario: item.articulo.precio,
+        idproducto: item.articulo.id,
+      }));
+
+      const factura = {
+        numero_factura: Math.floor(Math.random() * 1000000), // Genera un número de factura único
+        fecha_emision: new Date(),
+        monto_total: this.calcularTotal(),
+        descuento: this.descuentoTotal(),
+        metodo_pago: 'pendiente', // o cualquier otro método de pago
+        estado: 'pendiente', // o cualquier otro estado predeterminado
+      };
+
+  // se hace solicitudes al backend para guardar pedido y detalle de pedido
+  try {
+        const pedidoResponse = await axios.post('/guardarpedido', pedido);
+        const detallePedidoResponse = await axios.post('/guardarDetalle', detallePedido);
+        const facturaResponse = await axios.post('/guardarFactura', factura);
+
+        if(pedidoResponse === 201 || detallePedidoResponse === 201 || facturaResponse === 201){
+          setTimeout(() => {
+            this.mensajeExitoso = true;
+            this.mensajePedido = 'se proceso su pedido, te llevaremos a pagar!!';
+            router.push('/transacion');
+          }, 4000);
+        } else{
+          setTimeout(() => {
+            this.mensajeExitoso = false;
+            this.mensajePedido = 'Error al registrar usuario';
+          }, 4000);
+          // eslint-disable-next-line no-console
+          console.error('Error al registrar usuario. Estado:', pedidoResponse.status, detallePedidoResponse.status);
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Error al procesar el pedido:', error);
+      }
     }
   }
 };
