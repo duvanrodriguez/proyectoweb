@@ -45,7 +45,7 @@
     </div>
 
     <!-- Alerta de éxito -->
-    <div v-if="mensajeExitoso" class="alert alert-success" role="alert">
+    <div v-if="pedidoExitoso" class="alert alert-success" role="alert">
           {{ mensajePedido }}
         </div>
 
@@ -68,8 +68,12 @@ import router from '../routes';
 
 
   export default {
-    mensajeExitoso: false,
-    mensajePedido: '',
+    data() {
+    return {
+      pedidoExitoso: false,
+      mensajePedido: ''
+    };
+  },
     computed: {
     carrito() {
       return this.$store.state.carrito;
@@ -118,43 +122,33 @@ import router from '../routes';
       const pedido = {
         fecha_pedido: new Date(),
         estado: 'pendiente',
-        idusuario: usuario.id,
+        idusuarios: usuario.id,
       };
 
       const detallePedido = this.carrito.map(item => ({
         cantidad: item.cantidad,
         precio_unitario: item.articulo.precio,
-        idproducto: item.articulo.id,
+        idproductos: item.articulo.id,
       }));
-
-      const factura = {
-        numero_factura: Math.floor(Math.random() * 1000000), // Genera un número de factura único
-        fecha_emision: new Date(),
-        monto_total: this.calcularTotal(),
-        descuento: this.descuentoTotal(),
-        metodo_pago: 'pendiente', // o cualquier otro método de pago
-        estado: 'pendiente', // o cualquier otro estado predeterminado
-      };
 
   // se hace solicitudes al backend para guardar pedido y detalle de pedido
   try {
         const pedidoResponse = await axios.post('/guardarpedido', pedido);
         const detallePedidoResponse = await axios.post('/guardarDetalle', detallePedido);
-        const facturaResponse = await axios.post('/guardarFactura', factura);
-
-        if(pedidoResponse === 201 || detallePedidoResponse === 201 || facturaResponse === 201){
+        
+        if(pedidoResponse === 201 || detallePedidoResponse === 201 ){
           setTimeout(() => {
-            this.mensajeExitoso = true;
+            this.pedidoExitoso = true;
             this.mensajePedido = 'se proceso su pedido, te llevaremos a pagar!!';
             router.push('/transacion');
           }, 4000);
         } else{
           setTimeout(() => {
-            this.mensajeExitoso = false;
-            this.mensajePedido = 'Error al registrar usuario';
+            this.pedidoExitoso = false;
+            this.mensajePedido = 'Error al registrar su pedido';
           }, 4000);
           // eslint-disable-next-line no-console
-          console.error('Error al registrar usuario. Estado:', pedidoResponse.status, detallePedidoResponse.status);
+          console.error('Error al registrar pedido. Estado:', pedidoResponse.status, detallePedidoResponse.status);
         }
       } catch (error) {
         // eslint-disable-next-line no-console
