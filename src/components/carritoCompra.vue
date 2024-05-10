@@ -43,12 +43,15 @@
     </div>  
     <br>
       <button @click="vaciarCarrito">Vaciar Carrito</button>
+
+      <!-- Alerta de éxito -->
+      <div v-if="pedidoExitoso" class="alert alert-success" role="alert">
+          {{ mensajePedido }}
+      </div>
+
     </div>
 
-    <!-- Alerta de éxito -->
-    <div v-if="pedidoExitoso" class="alert alert-success" role="alert">
-          {{ mensajePedido }}
-        </div>
+    
 
   <br>
   <br>
@@ -147,18 +150,22 @@ import router from '../routes';
              // eslint-disable-next-line no-console
             console.log('datos detalle pedido enviados al back: ', detallePedido);
 
-        const detallePedidoResponse = await axios.post('/guardarDetalle', detallePedido);
+        const detallePedidoResponse = await axios.post('/guardarDetalle', { detalles: detallePedido });
 
           if(detallePedidoResponse.status === 201){
+            this.pedidoExitoso = true;
+            this.mensajePedido = 'se proceso su pedido, te llevaremos a pagar!!';
               setTimeout(() => {
               this.pedidoExitoso = true;
-              this.mensajePedido = 'se proceso su pedido, te llevaremos a pagar!!';
+              this.mensajePedido = '';
+              this.$store.dispatch('vaciarCarrito');
               router.push('/transacion');
             }, 4000);
         } else{
+          this.pedidoExitoso = false;
+            this.mensajePedido = 'Error al registrar su pedido';
           setTimeout(() => {
             this.pedidoExitoso = false;
-            this.mensajePedido = 'Error al registrar su pedido';
           }, 4000);
           // eslint-disable-next-line no-console
           console.error('Error al registrar pedido. Estado:', pedidoResponse.status);
@@ -183,6 +190,22 @@ import router from '../routes';
 </script>
   
   <style scoped>
+  .alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #28a745; /* Color de fondo verde para la alerta de éxito */
+  color: #ffffff; /* Color de texto blanco */
+  text-align: center;
+  padding: 10px 0;
+  z-index: 9999; /* Asegura que la alerta esté por encima de otros elementos */
+}
+
+.alert-success {
+  background-color: #28a745; /* Color de fondo verde para la alerta de éxito */
+}
+
   .cart-item {
   display: flex;
   align-items: center;

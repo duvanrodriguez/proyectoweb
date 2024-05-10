@@ -9,6 +9,7 @@ import Perfil from './components/perfil.vue';
 import DetalleArticulos from './components/detalleArticulo.vue';
 import CrearProducto from './components/crearArticulo.vue';
 import CarritoCompras from './components/carritoCompra.vue';
+import Trasacciones from './components/transacion.vue';
 
 
 Vue.use(VueRouter);
@@ -23,6 +24,7 @@ const routes = [
   { path: '/detalleArticulo/:id', name: 'detalleArticulo', component: DetalleArticulos },
   { path: '/crearArticulo', component: CrearProducto},
   { path: '/carrito', component: CarritoCompras},
+  { path: '/transacciones', component: Trasacciones},
 ];
 
 export default new VueRouter({
