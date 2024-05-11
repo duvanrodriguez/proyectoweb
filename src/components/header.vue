@@ -1,7 +1,7 @@
 <template>
     <header class="header">
       <div class="logo">
-        <img alt="Vue logo" src="/img/Dartech Digital.jpeg">
+        <img alt="Vue logo" src="../img/Dartech Digital.jpeg">
       </div>
       <h1>Tu puente hacia el futuro digital</h1>
       <nav class="center-nav">
