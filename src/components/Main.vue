@@ -4,7 +4,7 @@
     <div id="articulos-lista">
       <div v-for="producto in productos" :key="producto.id" class="boton-articulo" @click="redirectToDetalleArticulo(producto.idproductos)">
         <div class="articulo-card">
-          <img :src="producto.imagen" :alt="'Imagen de ' + producto.nombre">
+          <img :src="producto.urlimagen" :alt="'Imagen de ' + producto.nombre">
           <div class="articulo-info">
             <p class="nombre">{{ producto.nombre }}</p>
             <p class="descripcion">{{ producto.descripcion }}</p>

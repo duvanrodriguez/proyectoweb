@@ -8,7 +8,7 @@
     <div v-else>
       <div v-for="(item, index) in carrito" :key="index" class="cart-item">
         <div class="image-container">
-          <img :src="item.articulo.imagen" :alt="item.articulo.nombre">
+          <img :src="item.articulo.urlimagen" :alt="item.articulo.nombre">
         </div>
         <div class="details">
           <p> id: {{ item.articulo.idproductos  }}</p>
