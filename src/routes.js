@@ -24,7 +24,7 @@ const routes = [
   { path: '/detalleArticulo/:id', name: 'detalleArticulo', component: DetalleArticulos },
   { path: '/crearArticulo', component: CrearProducto},
   { path: '/carrito', component: CarritoCompras},
-  { path: '/transacciones', component: Trasacciones},
+  { path: '/trasaccionUser/:id', name: 'trasaccionUser', component: Trasacciones},
 ];
 
 export default new VueRouter({

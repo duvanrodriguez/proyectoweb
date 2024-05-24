@@ -28,7 +28,7 @@
         </div>
         <br>
         
-      <!-- <router-link to="/carrito" @click.native="agregarAlCarrito(articulo)" class="comprar-btn">Comprar</router-link>-->
+      <router-link to="/carrito" @click.native="agregarAlCarrito(articulo)" class="comprar-btn">Comprar</router-link>
       </div>
     </div>
   </main>
@@ -36,7 +36,6 @@
 
 <script>
 import axios from '../axios';
-//import { mapActions } from 'vuex';
 
 export default {
   data() {

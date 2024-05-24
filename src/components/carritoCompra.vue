@@ -159,7 +159,7 @@ import router from '../routes';
               this.pedidoExitoso = true;
               this.mensajePedido = '';
               this.$store.dispatch('vaciarCarrito');
-              router.push('/transacion');
+              router.push('/trasaccionUser');
             }, 4000);
         } else{
           this.pedidoExitoso = false;
