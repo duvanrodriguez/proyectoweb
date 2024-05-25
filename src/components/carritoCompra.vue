@@ -68,7 +68,7 @@
 <script>
 import axios from '../axios';
 import { decode } from "jsonwebtoken";
-import router from '../routes';
+//import router from '../routes';
 
 
   export default {
@@ -159,7 +159,8 @@ import router from '../routes';
               this.pedidoExitoso = true;
               this.mensajePedido = '';
               this.$store.dispatch('vaciarCarrito');
-              router.push('/trasaccionUser');
+              this.$router.push({ name: 'transacionUser', params: { id: usuario.id } });
+              //router.push('/transacionUser');
             }, 4000);
         } else{
           this.pedidoExitoso = false;

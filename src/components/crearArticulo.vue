@@ -19,15 +19,15 @@
           <label for="stock">Stock:</label>
           <input type="number" id="stock" v-model="productos.stock" min="0" required>
         </div>
-        <div class="form-group">
+        <!--<div class="form-group">
           <label for="imagen">Imagen:</label>
           <input type="file" id="imagen" @change="handleImagenUpload" accept="imagen/*">
-        </div>
+        </div>-->
         <button type="submit">Crear Producto</button>
       </form>
 
       <!-- Alerta de éxito -->
-      <div v-if="registoproducto" class="alert alert-success" role="alert">
+      <div v-if="registroExitoso" class="alert alert-success" role="alert">
           {{ mensajeProducto }}
         </div>
 
@@ -49,11 +49,11 @@
         productos:{
           nombre: '',
           descripcion: '',
-          precio: 0,
-          stock: 0,
-          imagen: null
+          precio: '',
+          stock: ''
+          //imagen: null
         },
-        registoproducto: false,
+        registroExitoso: false,
         mensajeProducto: ''
       };
     },
@@ -64,25 +64,27 @@
           // eslint-disable-next-line no-console
           console.log('Datos del producto:', this.productos);
 
-          const formData = new FormData();
-          formData.append('nombre', this.productos.nombre);
-          formData.append('descripcion', this.productos.descripcion);
-          formData.append('precio', this.productos.precio);
-          formData.append('stock', this.productos.stock);
-          formData.append('imagen', this.productos.imagen);
+          //const formData = new FormData();
+          //formData.append('nombre', this.productos.nombre);
+          //formData.append('descripcion', this.productos.descripcion);
+          //formData.append('precio', this.productos.precio);
+          //formData.append('stock', this.productos.stock);
+          //formData.append('imagen', this.productos.imagen);
 
-          const response = await axios.post('/registrarProductos', formData);
+          const response = await axios.post('/registrarProductos', this.productos);
 
           if (response.status === 201) {
+            this.registroExitoso = true;
+            this.mensajeRegistro = 'producto registrado exitosamente!';
               setTimeout(() => {
-                  this.registoproducto = true;
-                  this.mensajeProducto = '!producto registrado!!!';
+                  this.registroExitoso = true;
+                  this.mensajeRegistro = '';
                   router.push('/');
               }, 4000);
                 } else {
                     setTimeout(() => {
-                        this.registoproducto = false;
-                        this.mensajeProducto = 'error al registras el producto';
+                        this.registroExitoso = false;
+                        this.mensajeRegistro = 'error al registras el producto';
                     }, 4000);
                     // eslint-disable-next-line no-console
                     console.log('error al registrar el producto estado: ', response.status);
@@ -91,19 +93,32 @@
                 // Manejo de errores
                 // eslint-disable-next-line no-console
                 console.error('Error al enviar datos del producto al servidor:', error);
-                this.registoproducto = false;
-                this.mensajeProducto = 'Error al enviar datos del producto al servidor';
-            }
-        },
+              }
+        }/*,
         handleImagenUpload(event) {
         // Manejar la subida de la imagen
         this.productos.imagen = event.target.files[0];
-      }
+      }*/
     }
   };
   </script>
   
-  <style>
+  <style scoped>
+  .alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #28a745; /* Color de fondo verde para la alerta de éxito */
+  color: #ffffff; /* Color de texto blanco */
+  text-align: center;
+  padding: 10px 0;
+  z-index: 9999; /* Asegura que la alerta esté por encima de otros elementos */
+}
+
+.alert-success {
+  background-color: #28a745; /* Color de fondo verde para la alerta de éxito */
+}
   .product-form {
     max-width: 400px;
     margin: 0 auto;

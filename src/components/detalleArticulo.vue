@@ -19,23 +19,23 @@
         <!-- Apartado de cantidad -->
         <div class="cantidad-container">
           <div class="cantidad">
-            <button class="cantidad-btn" @click="decrementarCantidad">-</button>
-            <input class="cantidad-input" type="number" v-model="cantidad" :min="1" :max="articulo.stock">
-            <button class="cantidad-btn" @click="incrementarCantidad">+</button>
+            <button class="cantidad-btn" @click="decrementarCantidad" :disabled="cantidad <= 1">-</button>
+            <input class="cantidad-input" type="number" v-model="cantidad" :min="1" :max="stockRestante">
+            <button class="cantidad-btn" @click="incrementarCantidad" :disabled="cantidad >= stockRestante">+</button>
           </div>
-          <!--<button @click="agregarAlCarrito(articulo)" class="comprar-btn">Agregar al carrito</button>-->
-          <button @click="agregarAlCarrito" class="comprar-btn">Agregar al Carrito</button>
+          <button @click="agregarAlCarrito" class="comprar-btn" :disabled="cantidad > stockRestante || stockRestante === 0">Agregar al Carrito</button>
         </div>
         <br>
         
-      <router-link to="/carrito" @click.native="agregarAlCarrito(articulo)" class="comprar-btn">Comprar</router-link>
-      </div>
+        <router-link to="/carrito" @click.native="agregarAlCarrito" class="comprar-btn" :disabled="cantidad > stockRestante || stockRestante === 0">Comprar</router-link>
+     </div>
     </div>
   </main>
 </template>
 
 <script>
 import axios from '../axios';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -45,11 +45,20 @@ export default {
       props: ['articulo'],
     };
   },
+  computed: {
+    // Obtener el stock restante desde Vuex
+    ...mapGetters(['stockDisponible']),
+    stockRestante() {
+      return this.stockDisponible(this.articulo.id);
+    }
+  },
   mounted() {
     const id = this.$route.params.id;
     axios.get(`/detalleArticulo/${id}`)
       .then(response => {
         this.articulo = response.data;
+        // Inicializar el stock disponible en Vuex
+        this.inicializarStock({ articuloId: this.articulo.id, stock: this.articulo.stock });
       })
       .catch(error => {
         // eslint-disable-next-line no-console
@@ -59,7 +68,7 @@ export default {
   methods: {
     // Métodos para incrementar y decrementar la cantidad
     incrementarCantidad() {
-      if (this.cantidad < this.articulo.stock) {
+      if (this.cantidad < this.stockRestante) {
         this.cantidad++;
       }
     },
@@ -69,30 +78,16 @@ export default {
       }
     },
     agregarAlCarrito() {
-      // eslint-disable-next-line no-console
-      console.log('Agregando artículo al carrito...', this.articulo, this.cantidad);
-      //this.$store.dispatch('agregarAlCarrito', this.articulo, this.cantidad);
-      this.$store.dispatch('agregarAlCarrito', { articulo: this.articulo, cantidad: this.cantidad });
-    }
-    /*...mapActions(['agregarAlCarrito']),
-     // Método para agregar el artículo al carrito con la cantidad seleccionada
-     agregarAlCarrito() {
-      // eslint-disable-next-line no-console
-      console.log('Agregando artículo al carrito...', this.articulo, this.cantidad);
-      // Verificar si la cantidad seleccionada es mayor que 0
-        if (this.cantidad > 0) {
-          // Agregar el artículo al carrito junto con la cantidad
-          this.$emit('agregarAlCarrito', { 
-            articulo: this.articulo,
-            cantidad: this.cantidad
-          });
-        //this.$emit('agregarAlCarrito', articulo);
-        //this.$emit('agregarAlCarrito', { ...this.articulo, cantidad: this.cantidad });
+      if (this.cantidad <= this.stockRestante) {
+        this.$store.dispatch('agregarAlCarrito', { articulo: this.articulo, cantidad: this.cantidad });
+        // eslint-disable-next-line no-console
+        console.log('Agregando artículo al carrito...', this.articulo, this.cantidad);
       } else {
         // eslint-disable-next-line no-console
-        console.error('La cantidad seleccionada debe ser mayor que 0.');
+        console.error('No se puede agregar más de la cantidad disponible en stock');
       }
-    }*/
+    },
+    ...mapActions(['inicializarStock'])
   }
 };
 </script>

@@ -25,11 +25,11 @@
         <label for="Cieuda">Ciudad:</label><br>
         <input type="text" id="ciudad" v-model="usuarios.ciudad" required><br>
 
-        <label for="Rol">Rol:</label><br>
-        <input type="text" id="rol" v-model="usuarios.rol" required><br>
+          <!-- <label for="Rol">Rol:</label><br>-->
+        <input type="text" id="rol" v-model="usuarios.rol" required hidden><br>
 
-        <label for="Estado">Estado:</label><br>
-        <input type="text" id="estado" v-model="usuarios.estado" required><br>
+          <!-- <label for="Estado">Estado:</label><br>-->
+        <input type="text" id="estado" v-model="usuarios.estado" required hidden><br>
     </div>
         <div class="botones">
         <button type="submit" class="boton-registrar">Registrarse</button>
@@ -64,8 +64,8 @@
           password: '',
           direccion: '',
           ciudad: '',
-          rol: '',
-          estado: ''
+          rol: 'ESTANDAR',
+          estado: 'ACTIVO'
 
         },
         registroExitoso: false,

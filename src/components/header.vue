@@ -15,12 +15,12 @@
           <li>
             <router-link to="/usuarios" class="link">Contacto</router-link>
           </li>
-          <li>
+          <li v-if="isAuthenticated && isAdmin">
             <router-link to="/perfil" class="link">usuarios</router-link>
           </li>
           <!-- Mostrar el botón de cierre de sesión y el nombre del usuario si está autenticado -->
           <li v-if="isAuthenticated" class="dropdown">
-            <a href="#" class="link dropbtn">Bienvenido, {{ user.nombres }}</a>
+            <a href="#" class="link dropbtn">Bienvenido, {{ user.nombres }} {{ user.apellidos }}</a>
             <div class="dropdown-content">
               <button @click="logout">Cerrar sesión</button>
             </div>
@@ -29,7 +29,7 @@
           <li v-else>
             <router-link to="/login" class="link">Iniciar Sesión</router-link>
           </li>
-          <li v-if="isAuthenticated">
+          <li v-if="isAuthenticated && isAdmin">
             <router-link to="/crearArticulo" class="link">Crear Productos</router-link>
           </li>
           <li>
@@ -84,7 +84,8 @@ export default {
       isAuthenticated: false, // Indica si el usuario está autenticado
       user: {}, // Almacena los datos del usuario autenticado
       inicioExitoso: false,
-      mensajeInicio: ''
+      mensajeInicio: '',
+      isAdmin: false // Indica si el usuario es admin
     };
   },
   computed: {
@@ -98,6 +99,7 @@ export default {
     // Si el usuario está autenticado, obtener sus datos
     if (this.isAuthenticated) {
       this.user = this.getUserData();
+      this.isAdmin = this.checkAdminRole();
     }
   },
   methods: {
@@ -114,6 +116,10 @@ export default {
       const userData = decode(token);
       // Supongamos que el token contiene los datos del usuario en forma de objeto
       return userData;
+    },
+    // Verificar si el usuario tiene rol de admin
+    checkAdminRole() {
+      return this.user.rol === 'admin'; // Ajustar según la estructura del token
     },
     // Método para cerrar sesión
     async logout() {
